@@ -4,15 +4,17 @@ using UnityEngine;
 using System;
 using System.Globalization;
 using TMPro;
+using System.IO;
+using Newtonsoft.Json.Linq;
 
 [Serializable]
-public enum productUnity { ML, G, Un} ;
+public enum productUnity { ml, g, Un} ;
 public enum products { MILK_NINHO_NoLAC, COOKIE_SEM_MARCA };
 
 [Serializable]
 public class Fact {
-    public string fact;
-    public float perServing;
+    public string name;
+    public float value;
     public float dailyValue;
 }
 
@@ -35,31 +37,32 @@ public class NutritionFacts_Data : MonoBehaviour
     private int IGNORE_LINES = 3;
     public int linesCount = -1;
     private string[] lines = null;
+    private JToken item = null;
+    private List<GameObject> data = new List<GameObject>();
+    private float currentPortion = -1;
 
     private void Start()
     {
-        LoadFromCSV(product.ToString());
+        LoadData("data", 0);
     }
 
-    public void LoadFromCSV(string csvName) 
-    {
-        TextAsset csv = Resources.Load<TextAsset>(csvName);
-        lines = csv.text.Split('\n');
+    public void LoadData(string csvName, int productIndex) {
+        TextAsset jsonText = Resources.Load<TextAsset>(csvName);
+        var jsonArray = JArray.Parse(jsonText.text);
+        item = jsonArray[productIndex];
 
-        string[] firstLineParts = lines[0].Split(',');
-        unity = (productUnity)System.Enum.Parse(typeof(productUnity), firstLineParts[0]);
-        servingSize = int.Parse(firstLineParts[1]);
-        total = int.Parse(firstLineParts[2]);
+
+        unity = Enum.Parse <productUnity>(jsonArray[0]["unity"]?.ToString());
+        total = item["total"]?.ToObject<int>() ?? 0;
+
+        servingSize = item["servingSize"]?.ToObject<int>() ?? 0;
+        currentPortion = servingSize;
         servingsPerContainer = total / servingSize;
 
-        linesCount = lines.Length - 1;
-        facts = new Fact[linesCount];
 
-        //
         FullScreenController fullCanvas = GameObject.FindObjectOfType<FullScreenController>();
-
         //painel 1
-        string[] ingredientsParts = lines[1].Split(',');
+        string[] ingredientsParts = item["ingredients"]?.ToString().Split(',') ?? new string[0];
         string ingredientsText = "";
 
         for (int i = 0; i < ingredientsParts.Length; i++)
@@ -71,8 +74,9 @@ public class NutritionFacts_Data : MonoBehaviour
         }
         fullCanvas.ingredients.text = ingredientsText;
 
+
         //painel 3
-        string[] allergensParts = lines[2].Split(',');
+        string[] allergensParts = item["allergens"]?.ToString().Split(',') ?? new string[0];
         string allergensText = "";
 
         for (int i = 0; i < allergensParts.Length; i++)
@@ -86,23 +90,26 @@ public class NutritionFacts_Data : MonoBehaviour
 
         foreach (Transform child in fullCanvas.table.transform)
             Destroy(child.gameObject);
-        //
 
-        for (int i = IGNORE_LINES; i < linesCount; i++)
-        {
-            string[] parts = lines[i].Split(',');
-            facts[i] = new Fact
+        portionText.text = "" + currentPortion + " " + unity.ToString();
+        FullScreenController fullScreen = FindObjectOfType<FullScreenController>();
+        fullScreen.portionText.text = "" + currentPortion + " " + unity.ToString();
+        fullScreen.inputField.text = "" + currentPortion;
+
+        foreach (var factJson in item["facts"].Children()){
+            Fact fact = new Fact
             {
-                fact = parts[0],
-                perServing = float.Parse(parts[1], CultureInfo.InvariantCulture),
-                dailyValue = float.Parse(parts[2], CultureInfo.InvariantCulture)
+                name = factJson["name"].ToString(),
+                value = factJson["value"].ToObject<float>(),
+                dailyValue = factJson["dv"].ToObject<float>()
             };
 
             GameObject line = Instantiate(linePrefab, table.transform);
-            line.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = "" + facts[i].fact;
-            line.transform.GetChild(1).gameObject.GetComponent<TextMeshProUGUI>().text = "" + facts[i].perServing;
-            line.transform.GetChild(2).gameObject.GetComponent<TextMeshProUGUI>().text = "" + facts[i].dailyValue;
-                
+            line.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = fact.name;
+            line.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = ""+fact.value;
+            line.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = ""+fact.dailyValue;
+            data.Add(line);
+
             GameObject lineFullScreen = Instantiate(line, fullCanvas.table.transform);
         }
 
@@ -113,36 +120,48 @@ public class NutritionFacts_Data : MonoBehaviour
 
     public void calculatePortion(float portion)
     {
+        currentPortion = portion;
         portionText.text = "" + portion + " " + unity.ToString();
 
         FullScreenController fullCanvas = GameObject.FindObjectOfType<FullScreenController>();
-        for (int i = 0; i < linesCount - IGNORE_LINES; i++)
-        {
 
-            string[] parts = lines[i + IGNORE_LINES].Split(',');
+        int i = 0;
+        foreach (var factJson in item["facts"].Children())
+        {
             float mult = portion / servingSize;
+
+            string valueText = (item["facts"][i]["value"].ToObject<float>() * mult).ToString(CultureInfo.InvariantCulture);
+            string dvText = (item["facts"][i]["dv"].ToObject<float>() * mult).ToString(CultureInfo.InvariantCulture);
 
             //fullscreen
             Transform row = fullCanvas.table.transform.GetChild(i);
-
-            row.GetChild(1).GetComponent<TextMeshProUGUI>().text =
-                (float.Parse(parts[1], CultureInfo.InvariantCulture) * mult).ToString();
-
-            row.GetChild(2).GetComponent<TextMeshProUGUI>().text =
-                (float.Parse(parts[2], CultureInfo.InvariantCulture) * mult).ToString();
+            row.GetChild(1).GetComponent<TextMeshProUGUI>().text = valueText;
+            row.GetChild(2).GetComponent<TextMeshProUGUI>().text = dvText;
 
             //AR
-            table.GetChild(i).GetChild(1).GetComponent<TextMeshProUGUI>().text =
-                (float.Parse(parts[1], CultureInfo.InvariantCulture) * mult).ToString();
-
-            table.GetChild(i).GetChild(2).GetComponent<TextMeshProUGUI>().text =
-                (float.Parse(parts[2], CultureInfo.InvariantCulture) * mult).ToString();
+            table.GetChild(i).GetChild(1).GetComponent<TextMeshProUGUI>().text = valueText;
+            table.GetChild(i).GetChild(2).GetComponent<TextMeshProUGUI>().text = dvText;
+            i++;
         }
     }
 
     public void setData()
     {
         GameObject.FindObjectOfType<FullScreenController>().data = this;
+
+        FullScreenController fullCanvas = GameObject.FindObjectOfType<FullScreenController>();
+        foreach (Transform child in fullCanvas.table.transform)
+            Destroy(child.gameObject);
+        foreach (var obj in data)
+        {
+            Instantiate(obj, fullCanvas.table.transform);
+        }
+        if(currentPortion > 0) { 
+            portionText.text = "" + currentPortion + " " + unity.ToString();
+            FullScreenController fullScreen = FindObjectOfType<FullScreenController>();
+            fullScreen.portionText.text = "" + currentPortion + " " + unity.ToString();
+            fullScreen.inputField.text = "" + currentPortion;
+        }
     }
 
     public string getUnity()

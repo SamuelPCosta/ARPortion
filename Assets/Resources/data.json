@@ -1,0 +1,23 @@
+[
+  {
+    "unity": "ml",
+    "servingSize": 100,
+    "total": 1000,
+    "ingredients": "Whole milk, calcium (tricalcium phosphate), iron (ferric pyrophosphate), zinc (zinc sulfate), lactase enzyme, vitamin C (ascorbic acid), vitamin E (DL-alpha-tocopheryl acetate), vitamin A (retinyl acetate), vitamin D (cholecalciferol), sodium citrate, sodium triphosphate, sodium phosphate monobasic, sodium phosphate dibasic",
+    "allergens": "Dairy",
+    "facts": [
+      { "name": "Energy value", "value": 59, "dv": 3 },
+      { "name": "Carbohydrates", "value": 4.4, "dv": 1 },
+      { "name": "Sugars", "value": 4.4, "dv": 0 },
+      { "name": "Glucose", "value": 2.2, "dv": 0 },
+      { "name": "Galactose", "value": 2.2, "dv": 0 },
+      { "name": "Lactose", "value": 0, "dv": 0 },
+      { "name": "Proteins", "value": 3.1, "dv": 4 },
+      { "name": "Total fat", "value": 3.2, "dv": 6 },
+      { "name": "Saturated fat", "value": 2.0, "dv": 9 },
+      { "name": "Sodium", "value": 63, "dv": 3 },
+      { "name": "Calcium", "value": 150, "dv": 15 },
+      { "name": "Iron", "value": 2.1, "dv": 15 }
+    ]
+  }
+]

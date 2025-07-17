@@ -11,6 +11,7 @@ public class FullScreenController : MonoBehaviour
     public TextMeshProUGUI ingredients;
     public TextMeshProUGUI allergens;
     public TextMeshProUGUI portionText;
+    public TMP_InputField inputField;
 
     public ScrollRect scrollRect;
     public int panelsCount = 3;

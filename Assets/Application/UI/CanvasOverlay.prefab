@@ -190,6 +190,7 @@ MonoBehaviour:
   ingredients: {fileID: 6126512406051034679}
   allergens: {fileID: 5174737674990151509}
   portionText: {fileID: 3078811854257933066}
+  inputField: {fileID: 9177616836054071084}
   scrollRect: {fileID: 8946655196159054634}
   panelsCount: 3
   data: {fileID: 0}
@@ -701,7 +702,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: sdgsgsggsgs
+  m_text: XXX
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -4141,7 +4142,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: sdgsgsggsgs\neggfgfs\nrgehhdhdh\nrehhdghdh
+  m_text: XXX
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
