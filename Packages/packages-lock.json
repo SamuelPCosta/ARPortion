@@ -203,13 +203,13 @@
       }
     },
     "com.unity.xr.arcore": {
-      "version": "5.1.4",
+      "version": "5.1.6",
       "depth": 0,
       "source": "registry",
       "dependencies": {
         "com.unity.xr.core-utils": "2.1.0",
         "com.unity.xr.management": "4.0.1",
-        "com.unity.xr.arfoundation": "5.1.4",
+        "com.unity.xr.arfoundation": "5.1.6",
         "com.unity.modules.androidjni": "1.0.0",
         "com.unity.modules.unitywebrequest": "1.0.0"
       },

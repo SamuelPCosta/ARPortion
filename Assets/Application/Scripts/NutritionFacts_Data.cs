@@ -6,6 +6,7 @@ using System.Globalization;
 using TMPro;
 using System.IO;
 using Newtonsoft.Json.Linq;
+using System.Linq;
 
 [Serializable]
 public enum productUnity { ml, g, Un} ;
@@ -43,13 +44,19 @@ public class NutritionFacts_Data : MonoBehaviour
 
     private void Start()
     {
-        LoadData("data", 0);
+        //LoadData("Milk");
     }
 
-    public void LoadData(string csvName, int productIndex) {
-        TextAsset jsonText = Resources.Load<TextAsset>(csvName);
+    public void LoadData(string product) {
+        TextAsset jsonText = Resources.Load<TextAsset>("data");
         var jsonArray = JArray.Parse(jsonText.text);
-        item = jsonArray[productIndex];
+
+        if (product.Equals("Null"))
+            return;
+        else
+            item = jsonArray.Children<JObject>().FirstOrDefault(x => (string)x["product"] == product);
+        
+        //item = jsonArray[productIndex];
 
 
         unity = Enum.Parse <productUnity>(jsonArray[0]["unity"]?.ToString());
@@ -149,6 +156,7 @@ public class NutritionFacts_Data : MonoBehaviour
     {
         GameObject.FindObjectOfType<FullScreenController>().data = this;
 
+        //Panel 2
         FullScreenController fullCanvas = GameObject.FindObjectOfType<FullScreenController>();
         foreach (Transform child in fullCanvas.table.transform)
             Destroy(child.gameObject);

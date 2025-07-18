@@ -1,5 +1,6 @@
 [
   {
+    "product": "Milk",
     "unity": "ml",
     "servingSize": 100,
     "total": 1000,
@@ -18,6 +19,27 @@
       { "name": "Sodium", "value": 63, "dv": 3 },
       { "name": "Calcium", "value": 150, "dv": 15 },
       { "name": "Iron", "value": 2.1, "dv": 15 }
+    ]
+  },
+  {
+    "product": "Cookie",
+    "unity": "g",
+    "servingSize": 30,
+    "total": 120,
+    "ingredients": "Wheat flour enriched with iron and folic acid, sugar, vegetable fat, cocoa powder, salt, chemical leavening agents (ammonium bicarbonate and sodium bicarbonate), emulsifier soy lecithin, flavoring",
+    "allergens": "Wheat, soy",
+    "facts": [
+      { "name": "Energy value", "value": 145, "dv": 7 },
+      { "name": "Carbohydrates", "value": 22.7, "dv": 0 },
+      { "name": "Sugars", "value": 12, "dv": 13 },
+      { "name": "Proteins", "value": 2.3, "dv": 0 },
+      { "name": "Total fat", "value": 5.9, "dv": 0 },
+      { "name": "Saturated fat", "value": 2.5, "dv": 11 },
+      { "name": "Trans fat", "value": 0, "dv": 0 },
+      { "name": "Dietary fiber", "value": 0.8, "dv": 3 },
+      { "name": "Sodium", "value": 110, "dv": 5 },
+      { "name": "Iron", "value": 1.4, "dv": 10 },
+      { "name": "Calcium", "value": 20, "dv": 2 }
     ]
   }
 ]
