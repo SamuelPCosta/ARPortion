@@ -12,7 +12,10 @@ public class TableController : MonoBehaviour
 
     public void ActivateCanvasOverlay(){
         var canvas = GameObject.Find("CanvasOverlay");
-        if (canvas != null) canvas.transform.GetChild(0).gameObject.SetActive(true);
+        if (canvas != null) { 
+            canvas.transform.GetChild(0).gameObject.SetActive(true);
+            canvas.GetComponent<FullScreenController>().setTutorial();
+        }
         else
             print("objeto nulo");
     }

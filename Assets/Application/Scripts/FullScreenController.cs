@@ -17,6 +17,7 @@ public class FullScreenController : MonoBehaviour
     public GameObject Overlay;
     public GameObject[] panels;
     public GameObject allergenItems;
+    public GameObject tutorial;
 
     public ScrollRect scrollRect;
     public int panelsCount = 3;
@@ -71,5 +72,20 @@ public class FullScreenController : MonoBehaviour
         {
             data.calculatePortion(portionValue);
         }
+    }
+
+    public void MarkTutorialAsSeen()
+    {
+        tutorial.SetActive(false);
+        PlayerPrefs.SetInt("tutorial", 1);
+        PlayerPrefs.Save();
+    }
+
+    public void setTutorial()
+    {
+        if (PlayerPrefs.GetInt("tutorial", 0) == 0)
+            tutorial.SetActive(true);
+        else
+            tutorial.SetActive(false);
     }
 }

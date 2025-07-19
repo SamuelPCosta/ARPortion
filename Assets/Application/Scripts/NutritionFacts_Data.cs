@@ -34,8 +34,6 @@ public class NutritionFacts_Data : MonoBehaviour
     [SerializeField] private float servingsPerContainer;
     [SerializeField] private Fact[] facts;
 
-    private int IGNORE_LINES = 3;
-    public int linesCount = -1;
     private string[] lines = null;
     private JToken item = null;
     private List<GameObject> data = new List<GameObject>();
@@ -78,9 +76,9 @@ public class NutritionFacts_Data : MonoBehaviour
         foreach (Transform child in fullCanvas.table.transform)
             Destroy(child.gameObject);
 
-        portionText.text = "" + currentPortion + unity;
         FullScreenController fullScreen = FindObjectOfType<FullScreenController>();
-        fullScreen.portionText.text = "" + currentPortion + " " + unity;
+        fullScreen.portionText.text = portionText.text = "" + currentPortion + unity;
+
         fullScreen.inputField.text = "" + currentPortion;
 
         foreach (var factJson in item["facts"].Children()){
@@ -141,10 +139,10 @@ public class NutritionFacts_Data : MonoBehaviour
 
     public void calculatePortion(float portion)
     {
-        currentPortion = portion;
-        portionText.text = "" + portion + " " + unity.ToString();
-
         FullScreenController fullCanvas = GameObject.FindObjectOfType<FullScreenController>();
+
+        currentPortion = portion;
+        fullCanvas.portionText.text = portionText.text = "" + portion + unity.ToString().Trim();
 
         int i = 0;
         foreach (var factJson in item["facts"].Children())
