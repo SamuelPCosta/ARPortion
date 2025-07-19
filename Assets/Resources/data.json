@@ -1,5 +1,16 @@
 [
   {
+    "product": "Error",
+    "unity": "un",
+    "servingSize": 1,
+    "total": 1,
+    "ingredients": "No data available",
+    "allergens": "Unknown",
+    "facts": [
+      { "name": "Error", "value": 0, "dv": 0 }
+    ]
+  },
+  {
     "product": "Milk",
     "unity": "ml",
     "servingSize": 100,

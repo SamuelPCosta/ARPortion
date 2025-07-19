@@ -9,8 +9,7 @@ using Newtonsoft.Json.Linq;
 using System.Linq;
 
 [Serializable]
-public enum productUnity { ml, g, Un} ;
-public enum products { MILK_NINHO_NoLAC, COOKIE_SEM_MARCA };
+public enum productUnity { ml, g, un} ;
 
 [Serializable]
 public class Fact {
@@ -28,7 +27,6 @@ public class NutritionFacts_Data : MonoBehaviour
     [SerializeField] private GameObject linePrefab;
 
     [Header("Data")]
-    [SerializeField] private products product;
     [SerializeField] private productUnity unity;
     [SerializeField] private int servingSize;
     [SerializeField] private int total;
@@ -40,6 +38,8 @@ public class NutritionFacts_Data : MonoBehaviour
     private string[] lines = null;
     private JToken item = null;
     private List<GameObject> data = new List<GameObject>();
+    private string ingredients = "";
+    private string allergens = "";
     private float currentPortion = -1;
 
     private void Start()
@@ -52,14 +52,12 @@ public class NutritionFacts_Data : MonoBehaviour
         var jsonArray = JArray.Parse(jsonText.text);
 
         if (product.Equals("Null"))
-            return;
+            item = jsonArray.Children<JObject>().FirstOrDefault(x => (string)x["product"] == "Error");
         else
             item = jsonArray.Children<JObject>().FirstOrDefault(x => (string)x["product"] == product);
-        
-        //item = jsonArray[productIndex];
 
+        Enum.TryParse<productUnity>(item["unity"]?.ToString(), true, out var unity);
 
-        unity = Enum.Parse <productUnity>(jsonArray[0]["unity"]?.ToString());
         total = item["total"]?.ToObject<int>() ?? 0;
 
         servingSize = item["servingSize"]?.ToObject<int>() ?? 0;
@@ -68,27 +66,9 @@ public class NutritionFacts_Data : MonoBehaviour
 
 
         FullScreenController fullCanvas = GameObject.FindObjectOfType<FullScreenController>();
-        //painel 1
-        string[] ingredientsParts = item["ingredients"]?.ToString().Split(',') ?? new string[0];
-        string ingredientsText = "";
-
-        for (int i = 0; i < ingredientsParts.Length; i++)
-        {
-            string part = ingredientsParts[i].Trim();
-            if (part.Length > 0)
-                part = char.ToUpper(part[0]) + part.Substring(1);
-            ingredientsText += "• " + part + "\n";
-        }
-        fullCanvas.ingredients.text = ingredientsText;
-
-
-        //painel 3
-        string[] allergensParts = item["allergens"]?.ToString().Split(',') ?? new string[0];
-        string allergensText = "";
-
-        for (int i = 0; i < allergensParts.Length; i++)
-            allergensText += "• " + allergensParts[i].Trim() + "\n";
-        fullCanvas.allergens.text = allergensText;
+        //painel 1 & 3
+        ingredients = fullCanvas.ingredients.text = FormatBulletList(item["ingredients"]);
+        allergens = fullCanvas.allergens.text = FormatBulletList(item["allergens"]);
 
 
         //painel 2
@@ -98,9 +78,9 @@ public class NutritionFacts_Data : MonoBehaviour
         foreach (Transform child in fullCanvas.table.transform)
             Destroy(child.gameObject);
 
-        portionText.text = "" + currentPortion + " " + unity.ToString();
+        portionText.text = "" + currentPortion + unity;
         FullScreenController fullScreen = FindObjectOfType<FullScreenController>();
-        fullScreen.portionText.text = "" + currentPortion + " " + unity.ToString();
+        fullScreen.portionText.text = "" + currentPortion + " " + unity;
         fullScreen.inputField.text = "" + currentPortion;
 
         foreach (var factJson in item["facts"].Children()){
@@ -120,10 +100,25 @@ public class NutritionFacts_Data : MonoBehaviour
             GameObject lineFullScreen = Instantiate(line, fullCanvas.table.transform);
         }
 
-        portionText.text = "" + servingSize + " " + unity.ToString();
-        fullCanvas.portionText.text = "" + servingSize + " " + unity.ToString();
+        portionText.text = "" + servingSize + unity;
+        fullCanvas.portionText.text = "" + servingSize + unity;
     }
 
+    string FormatBulletList(JToken token)
+    {
+        var parts = token?.ToString().Split(',') ?? new string[0];
+        string result = "";
+
+        foreach (var partRaw in parts)
+        {
+            var part = partRaw.Trim();
+            if (part.Length > 0)
+                part = char.ToUpper(part[0]) + part.Substring(1);
+            result += "• " + part + "\n";
+        }
+
+        return result;
+    }
 
     public void calculatePortion(float portion)
     {
@@ -137,8 +132,8 @@ public class NutritionFacts_Data : MonoBehaviour
         {
             float mult = portion / servingSize;
 
-            string valueText = (item["facts"][i]["value"].ToObject<float>() * mult).ToString(CultureInfo.InvariantCulture);
-            string dvText = (item["facts"][i]["dv"].ToObject<float>() * mult).ToString(CultureInfo.InvariantCulture);
+            string valueText = (item["facts"][i]["value"].ToObject<float>() * mult).ToString("0.#", CultureInfo.InvariantCulture);
+            string dvText = (item["facts"][i]["dv"].ToObject<float>() * mult).ToString("0.#", CultureInfo.InvariantCulture);
 
             //fullscreen
             Transform row = fullCanvas.table.transform.GetChild(i);
@@ -164,12 +159,16 @@ public class NutritionFacts_Data : MonoBehaviour
         {
             Instantiate(obj, fullCanvas.table.transform);
         }
-        if(currentPortion > 0) { 
-            portionText.text = "" + currentPortion + " " + unity.ToString();
-            FullScreenController fullScreen = FindObjectOfType<FullScreenController>();
-            fullScreen.portionText.text = "" + currentPortion + " " + unity.ToString();
-            fullScreen.inputField.text = "" + currentPortion;
-        }
+
+        portionText.text = "" + currentPortion + unity;
+        FullScreenController fullScreen = FindObjectOfType<FullScreenController>();
+        fullScreen.portionText.text = "" + currentPortion + unity;
+        fullScreen.inputField.text = "" + currentPortion;
+        
+
+        //Panel 1 & 3
+        fullCanvas.ingredients.text = FormatBulletList(item["ingredients"]);
+        fullCanvas.allergens.text = FormatBulletList(item["allergens"]);
     }
 
     public string getUnity()

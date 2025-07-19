@@ -191,6 +191,7 @@ MonoBehaviour:
   allergens: {fileID: 5174737674990151509}
   portionText: {fileID: 3078811854257933066}
   inputField: {fileID: 9177616836054071084}
+  Overlay: {fileID: 69129551826696253}
   scrollRect: {fileID: 8946655196159054634}
   panelsCount: 3
   data: {fileID: 0}

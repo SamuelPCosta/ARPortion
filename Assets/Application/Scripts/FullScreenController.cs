@@ -4,6 +4,8 @@ using UnityEngine.EventSystems;
 using System.Collections;
 using TMPro;
 using System.Globalization;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.LowLevel;
 
 public class FullScreenController : MonoBehaviour
 {
@@ -12,6 +14,7 @@ public class FullScreenController : MonoBehaviour
     public TextMeshProUGUI allergens;
     public TextMeshProUGUI portionText;
     public TMP_InputField inputField;
+    public GameObject Overlay;
 
     public ScrollRect scrollRect;
     public int panelsCount = 3;
@@ -44,6 +47,20 @@ public class FullScreenController : MonoBehaviour
         scrollRect.horizontalNormalizedPosition = Mathf.MoveTowards(scrollPos, nearest, 0.05f);
 
         lastScrollPos = scrollPos;
+
+        //if (Keyboard.current.escapeKey.wasPressedThisFrame)
+        //{
+        //    if (Overlay.activeSelf)
+        //        Overlay.SetActive(false);
+        //}
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (Overlay.activeSelf)
+                Overlay.SetActive(false);
+            else
+                Application.Quit();
+        }
     }
 
     public void calculate()

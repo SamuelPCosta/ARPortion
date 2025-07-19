@@ -1848,7 +1848,7 @@ GameObject:
   - component: {fileID: 1740625056}
   - component: {fileID: 1740625055}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: ARmodeController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
