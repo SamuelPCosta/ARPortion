@@ -15,6 +15,8 @@ public class FullScreenController : MonoBehaviour
     public TextMeshProUGUI portionText;
     public TMP_InputField inputField;
     public GameObject Overlay;
+    public GameObject[] panels;
+    public GameObject allergenItems;
 
     public ScrollRect scrollRect;
     public int panelsCount = 3;
@@ -47,12 +49,6 @@ public class FullScreenController : MonoBehaviour
         scrollRect.horizontalNormalizedPosition = Mathf.MoveTowards(scrollPos, nearest, 0.05f);
 
         lastScrollPos = scrollPos;
-
-        //if (Keyboard.current.escapeKey.wasPressedThisFrame)
-        //{
-        //    if (Overlay.activeSelf)
-        //        Overlay.SetActive(false);
-        //}
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {

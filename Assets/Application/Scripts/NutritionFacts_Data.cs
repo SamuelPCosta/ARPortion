@@ -24,6 +24,7 @@ public class NutritionFacts_Data : MonoBehaviour
     [Header("Objects")]
     [SerializeField] private Transform table;
     [SerializeField] private TextMeshProUGUI portionText;
+    [SerializeField] private TextMeshProUGUI productName;
     [SerializeField] private GameObject linePrefab;
 
     [Header("Data")]
@@ -39,13 +40,9 @@ public class NutritionFacts_Data : MonoBehaviour
     private JToken item = null;
     private List<GameObject> data = new List<GameObject>();
     private string ingredients = "";
-    private string allergens = "";
+    private JToken allergens;
     private float currentPortion = -1;
-
-    private void Start()
-    {
-        //LoadData("Milk");
-    }
+    private string itemName;
 
     public void LoadData(string product) {
         TextAsset jsonText = Resources.Load<TextAsset>("data");
@@ -56,10 +53,11 @@ public class NutritionFacts_Data : MonoBehaviour
         else
             item = jsonArray.Children<JObject>().FirstOrDefault(x => (string)x["product"] == product);
 
+
+        itemName = product;
+        productName.text = itemName;
         Enum.TryParse<productUnity>(item["unity"]?.ToString(), true, out var unity);
-
         total = item["total"]?.ToObject<int>() ?? 0;
-
         servingSize = item["servingSize"]?.ToObject<int>() ?? 0;
         currentPortion = servingSize;
         servingsPerContainer = total / servingSize;
@@ -68,7 +66,9 @@ public class NutritionFacts_Data : MonoBehaviour
         FullScreenController fullCanvas = GameObject.FindObjectOfType<FullScreenController>();
         //painel 1 & 3
         ingredients = fullCanvas.ingredients.text = FormatBulletList(item["ingredients"]);
-        allergens = fullCanvas.allergens.text = FormatBulletList(item["allergens"]);
+        allergens = item["allergens"];
+        setAllergnsItems(item["allergens"]);
+
 
 
         //painel 2
@@ -84,8 +84,7 @@ public class NutritionFacts_Data : MonoBehaviour
         fullScreen.inputField.text = "" + currentPortion;
 
         foreach (var factJson in item["facts"].Children()){
-            Fact fact = new Fact
-            {
+            Fact fact = new Fact{
                 name = factJson["name"].ToString(),
                 value = factJson["value"].ToObject<float>(),
                 dailyValue = factJson["dv"].ToObject<float>()
@@ -100,11 +99,13 @@ public class NutritionFacts_Data : MonoBehaviour
             GameObject lineFullScreen = Instantiate(line, fullCanvas.table.transform);
         }
 
+        setName();
+
         portionText.text = "" + servingSize + unity;
         fullCanvas.portionText.text = "" + servingSize + unity;
     }
 
-    string FormatBulletList(JToken token)
+    private string FormatBulletList(JToken token)
     {
         var parts = token?.ToString().Split(',') ?? new string[0];
         string result = "";
@@ -118,6 +119,24 @@ public class NutritionFacts_Data : MonoBehaviour
         }
 
         return result;
+    }
+
+    private void setAllergnsItems(JToken token)
+    {
+        FullScreenController fullCanvas = GameObject.FindObjectOfType<FullScreenController>();
+
+        var allergensOfProduct = token?.ToString().ToLower().Split(',').
+                                Select(str => str.Trim()).ToArray() ?? new string[0];
+
+        List<GameObject> items = fullCanvas.allergenItems.transform.Cast<Transform>().
+                                Select(transform => transform.gameObject).ToList();
+
+        foreach (var item in items){
+            if (allergensOfProduct.Contains(item.name.ToLower()))
+                item.SetActive(true);
+            else
+                item.SetActive(false);
+        }
     }
 
     public void calculatePortion(float portion)
@@ -168,7 +187,18 @@ public class NutritionFacts_Data : MonoBehaviour
 
         //Panel 1 & 3
         fullCanvas.ingredients.text = FormatBulletList(item["ingredients"]);
-        fullCanvas.allergens.text = FormatBulletList(item["allergens"]);
+        setAllergnsItems(item["allergens"]);
+
+        setName();
+    }
+
+    private void setName()
+    {
+        FullScreenController fullScreen = FindObjectOfType<FullScreenController>();
+        foreach (var panel in fullScreen.panels)
+        {
+            panel.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = itemName;
+        }
     }
 
     public string getUnity()
