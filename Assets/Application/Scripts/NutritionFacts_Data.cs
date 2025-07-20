@@ -54,16 +54,17 @@ public class NutritionFacts_Data : MonoBehaviour
 
         itemName = product;
         productName.text = itemName;
-        Enum.TryParse<productUnity>(item["unity"]?.ToString(), true, out var unity);
+        Enum.TryParse<productUnity>(item["unity"]?.ToString(), true, out unity);
+
         total = item["total"]?.ToObject<int>() ?? 0;
         servingSize = item["servingSize"]?.ToObject<int>() ?? 0;
         currentPortion = servingSize;
         servingsPerContainer = total / servingSize;
 
 
-        FullScreenController fullCanvas = GameObject.FindObjectOfType<FullScreenController>();
+        FullScreenController fullScreen = GameObject.FindObjectOfType<FullScreenController>();
         //painel 1 & 3
-        ingredients = fullCanvas.ingredients.text = FormatBulletList(item["ingredients"]);
+        ingredients = fullScreen.ingredients.text = FormatBulletList(item["ingredients"]);
         allergens = item["allergens"];
         setAllergnsItems(item["allergens"]);
 
@@ -73,11 +74,10 @@ public class NutritionFacts_Data : MonoBehaviour
         foreach (Transform child in table.transform)
             Destroy(child.gameObject);
 
-        foreach (Transform child in fullCanvas.table.transform)
+        foreach (Transform child in fullScreen.table.transform)
             Destroy(child.gameObject);
 
-        FullScreenController fullScreen = FindObjectOfType<FullScreenController>();
-        fullScreen.portionText.text = portionText.text = "" + currentPortion + unity;
+        fullScreen.portionText.text = portionText.text = "" + currentPortion + unity.ToString();
 
         fullScreen.inputField.text = "" + currentPortion;
 
@@ -94,13 +94,12 @@ public class NutritionFacts_Data : MonoBehaviour
             line.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = ""+fact.dailyValue;
             data.Add(line);
 
-            GameObject lineFullScreen = Instantiate(line, fullCanvas.table.transform);
+            GameObject lineFullScreen = Instantiate(line, fullScreen.table.transform);
         }
 
         setName();
 
-        portionText.text = "" + servingSize + unity;
-        fullCanvas.portionText.text = "" + servingSize + unity;
+        fullScreen.unityText.text = ""+unity.ToString();
     }
 
     private string FormatBulletList(JToken token)
@@ -177,11 +176,12 @@ public class NutritionFacts_Data : MonoBehaviour
             Instantiate(obj, fullCanvas.table.transform);
         }
 
-        portionText.text = "" + currentPortion + unity;
+        portionText.text = "" + currentPortion + unity.ToString();
         FullScreenController fullScreen = FindObjectOfType<FullScreenController>();
-        fullScreen.portionText.text = "" + currentPortion + unity;
+        fullScreen.portionText.text = "" + currentPortion + unity.ToString();
         fullScreen.inputField.text = "" + currentPortion;
-        
+        fullScreen.unityText.text = "" + unity.ToString();
+
 
         //Panel 1 & 3
         fullCanvas.ingredients.text = FormatBulletList(item["ingredients"]);
@@ -195,7 +195,8 @@ public class NutritionFacts_Data : MonoBehaviour
         FullScreenController fullScreen = FindObjectOfType<FullScreenController>();
         foreach (var panel in fullScreen.panels)
         {
-            panel.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = itemName;
+            Transform titles = panel.transform.GetChild(0);
+            titles.GetChild(1).GetComponent<TextMeshProUGUI>().text = itemName; //productName
         }
     }
 

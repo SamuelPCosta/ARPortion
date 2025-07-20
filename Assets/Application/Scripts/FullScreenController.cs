@@ -13,7 +13,9 @@ public class FullScreenController : MonoBehaviour
     public TextMeshProUGUI ingredients;
     public TextMeshProUGUI allergens;
     public TextMeshProUGUI portionText;
+    public TextMeshProUGUI unityText;
     public TMP_InputField inputField;
+    
     public GameObject Overlay;
     public GameObject[] panels;
     public GameObject allergenItems;
