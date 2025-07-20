@@ -33,6 +33,46 @@
     ]
   },
   {
+    "product": "Yogurt",
+    "unity": "g",
+    "servingSize": 120,
+    "total": 480,
+    "ingredients": "Pasteurized milk, skim milk powder, sugar, Lactobacillus bulgaricus, Streptococcus thermophilus, natural flavor",
+    "allergens": "Dairy",
+    "facts": [
+      { "name": "Energy value", "value": 85, "dv": 4 },
+      { "name": "Carbohydrates", "value": 12.0, "dv": 4 },
+      { "name": "Sugars", "value": 11.0, "dv": 12 },
+      { "name": "Proteins", "value": 4.0, "dv": 5 },
+      { "name": "Total fat", "value": 2.5, "dv": 5 },
+      { "name": "Saturated fat", "value": 1.5, "dv": 7 },
+      { "name": "Trans fat", "value": 0, "dv": 0 },
+      { "name": "Dietary fiber", "value": 0, "dv": 0 },
+      { "name": "Sodium", "value": 55, "dv": 2 },
+      { "name": "Calcium", "value": 140, "dv": 14 }
+    ]
+  },
+  {
+    "product": "Granola Bar",
+    "unity": "g",
+    "servingSize": 25,
+    "total": 100,
+    "ingredients": "Rolled oats, sugar, vegetable oil, honey, wheat flour, dried fruits (raisins; cranberries), salt, emulsifier soy lecithin, natural flavor",
+    "allergens": "Wheat, soy",
+    "facts": [
+      { "name": "Energy value", "value": 110, "dv": 6 },
+      { "name": "Carbohydrates", "value": 18.0, "dv": 6 },
+      { "name": "Sugars", "value": 7.0, "dv": 8 },
+      { "name": "Proteins", "value": 2.0, "dv": 3 },
+      { "name": "Total fat", "value": 3.5, "dv": 6 },
+      { "name": "Saturated fat", "value": 0.7, "dv": 3 },
+      { "name": "Trans fat", "value": 0, "dv": 0 },
+      { "name": "Dietary fiber", "value": 1.5, "dv": 6 },
+      { "name": "Sodium", "value": 40, "dv": 2 },
+      { "name": "Iron", "value": 0.6, "dv": 4 }
+    ]
+  },
+  {
     "product": "Cookie",
     "unity": "g",
     "servingSize": 30,
