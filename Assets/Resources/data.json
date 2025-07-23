@@ -11,6 +11,27 @@
     ]
   },
   {
+    "product": "Cookie",
+    "unity": "g",
+    "servingSize": 30,
+    "total": 120,
+    "ingredients": "Wheat flour enriched with iron and folic acid, sugar, vegetable fat, cocoa powder, salt, chemical leavening agents (ammonium bicarbonate and sodium bicarbonate), emulsifier soy lecithin, flavoring",
+    "allergens": "Wheat, soy",
+    "facts": [
+      { "name": "Energy value", "value": 145, "dv": 7 },
+      { "name": "Carbohydrates", "value": 22.7, "dv": 0 },
+      { "name": "Sugars", "value": 12, "dv": 13 },
+      { "name": "Proteins", "value": 2.3, "dv": 0 },
+      { "name": "Total fat", "value": 5.9, "dv": 0 },
+      { "name": "Saturated fat", "value": 2.5, "dv": 11 },
+      { "name": "Trans fat", "value": 0, "dv": 0 },
+      { "name": "Dietary fiber", "value": 0.8, "dv": 3 },
+      { "name": "Sodium", "value": 110, "dv": 5 },
+      { "name": "Iron", "value": 1.4, "dv": 10 },
+      { "name": "Calcium", "value": 20, "dv": 2 }
+    ]
+  },
+  {
     "product": "Milk",
     "unity": "ml",
     "servingSize": 100,
@@ -33,6 +54,31 @@
     ]
   },
   {
+    "product": "Peanut Butter",
+    "unity": "g",
+    "servingSize": 20,
+    "total": 200,
+    "ingredients": "Roasted peanuts, sugar, hydrogenated vegetable oil (rapeseed, cottonseed, soybean), salt",
+    "allergens": "Peanuts",
+    "facts": [
+      { "name": "Energy value", "value": 120, "dv": 6 },
+      { "name": "Carbohydrates", "value": 4.0, "dv": 1 },
+      { "name": "Sugars", "value": 1.5, "dv": 2 },
+      { "name": "Proteins", "value": 5.0, "dv": 7 },
+      { "name": "Total fat", "value": 10.0, "dv": 18 },
+      { "name": "Saturated fat", "value": 2.0, "dv": 9 },
+      { "name": "Trans fat", "value": 0, "dv": 0 },
+      { "name": "Monounsaturated fat", "value": 5.0, "dv": 0 },
+      { "name": "Polyunsaturated fat", "value": 2.5, "dv": 0 },
+      { "name": "Dietary fiber", "value": 1.8, "dv": 7 },
+      { "name": "Sodium", "value": 70, "dv": 3 },
+      { "name": "Iron", "value": 0.4, "dv": 2 },
+      { "name": "Calcium", "value": 10, "dv": 1 },
+      { "name": "Potassium", "value": 120, "dv": 3 },
+      { "name": "Magnesium", "value": 25, "dv": 6 }
+    ]
+  },
+  {
     "product": "Yogurt",
     "unity": "g",
     "servingSize": 120,
@@ -50,47 +96,6 @@
       { "name": "Dietary fiber", "value": 0, "dv": 0 },
       { "name": "Sodium", "value": 55, "dv": 2 },
       { "name": "Calcium", "value": 140, "dv": 14 }
-    ]
-  },
-  {
-    "product": "Granola Bar",
-    "unity": "g",
-    "servingSize": 25,
-    "total": 100,
-    "ingredients": "Rolled oats, sugar, vegetable oil, honey, wheat flour, dried fruits (raisins; cranberries), salt, emulsifier soy lecithin, natural flavor",
-    "allergens": "Wheat, soy",
-    "facts": [
-      { "name": "Energy value", "value": 110, "dv": 6 },
-      { "name": "Carbohydrates", "value": 18.0, "dv": 6 },
-      { "name": "Sugars", "value": 7.0, "dv": 8 },
-      { "name": "Proteins", "value": 2.0, "dv": 3 },
-      { "name": "Total fat", "value": 3.5, "dv": 6 },
-      { "name": "Saturated fat", "value": 0.7, "dv": 3 },
-      { "name": "Trans fat", "value": 0, "dv": 0 },
-      { "name": "Dietary fiber", "value": 1.5, "dv": 6 },
-      { "name": "Sodium", "value": 40, "dv": 2 },
-      { "name": "Iron", "value": 0.6, "dv": 4 }
-    ]
-  },
-  {
-    "product": "Cookie",
-    "unity": "g",
-    "servingSize": 30,
-    "total": 120,
-    "ingredients": "Wheat flour enriched with iron and folic acid, sugar, vegetable fat, cocoa powder, salt, chemical leavening agents (ammonium bicarbonate and sodium bicarbonate), emulsifier soy lecithin, flavoring",
-    "allergens": "Wheat, soy",
-    "facts": [
-      { "name": "Energy value", "value": 145, "dv": 7 },
-      { "name": "Carbohydrates", "value": 22.7, "dv": 0 },
-      { "name": "Sugars", "value": 12, "dv": 13 },
-      { "name": "Proteins", "value": 2.3, "dv": 0 },
-      { "name": "Total fat", "value": 5.9, "dv": 0 },
-      { "name": "Saturated fat", "value": 2.5, "dv": 11 },
-      { "name": "Trans fat", "value": 0, "dv": 0 },
-      { "name": "Dietary fiber", "value": 0.8, "dv": 3 },
-      { "name": "Sodium", "value": 110, "dv": 5 },
-      { "name": "Iron", "value": 1.4, "dv": 10 },
-      { "name": "Calcium", "value": 20, "dv": 2 }
     ]
   }
 ]

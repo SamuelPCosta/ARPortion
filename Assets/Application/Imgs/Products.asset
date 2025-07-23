@@ -31,9 +31,29 @@ MonoBehaviour:
       m_GuidLow: 5665386073864755786
       m_GuidHigh: 5196983786212221856
     m_SerializedTextureGuid:
-      m_GuidLow: 16876217840236084940
-      m_GuidHigh: 635533066920184282
+      m_GuidLow: 12593280749900406234
+      m_GuidHigh: 12408740378684297835
     m_Size: {x: 0.07, y: 0.07}
     m_SpecifySize: 1
     m_Name: Cookie
-    m_Texture: {fileID: 2800000, guid: 2f61becc5eb6ea34dac9ca08f5ddd108, type: 3}
+    m_Texture: {fileID: 0}
+  - m_SerializedGuid:
+      m_GuidLow: 4706186087184013885
+      m_GuidHigh: 5955509112402591658
+    m_SerializedTextureGuid:
+      m_GuidLow: 15453148414499356936
+      m_GuidHigh: 3131892688887263899
+    m_Size: {x: 0.07, y: 0.07}
+    m_SpecifySize: 1
+    m_Name: Peanut Butter
+    m_Texture: {fileID: 0}
+  - m_SerializedGuid:
+      m_GuidLow: 4669170871210415138
+      m_GuidHigh: 18154422184307759748
+    m_SerializedTextureGuid:
+      m_GuidLow: 627377073935079965
+      m_GuidHigh: 2641435641419958491
+    m_Size: {x: 0.07, y: 0.07}
+    m_SpecifySize: 1
+    m_Name: Yogurt
+    m_Texture: {fileID: 0}

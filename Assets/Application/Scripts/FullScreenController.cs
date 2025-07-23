@@ -20,6 +20,7 @@ public class FullScreenController : MonoBehaviour
     public GameObject[] panels;
     public GameObject allergenItems;
     public GameObject tutorial;
+    public Transform pagination;
 
     public ScrollRect scrollRect;
     public int panelsCount = 3;
@@ -48,6 +49,11 @@ public class FullScreenController : MonoBehaviour
         if (Mathf.Abs(dir) > 0.003f)
             targetIndex = dir > 0 ? Mathf.Ceil(raw) : Mathf.Floor(raw);
 
+        if (targetIndex != 1)
+            MarkTutorialAsSeen();
+
+        SetActiveDot((int)targetIndex);
+
         float nearest = Mathf.Clamp01(targetIndex * step);
         scrollRect.horizontalNormalizedPosition = Mathf.MoveTowards(scrollPos, nearest, 0.05f);
 
@@ -73,6 +79,15 @@ public class FullScreenController : MonoBehaviour
         if (float.TryParse(input, NumberStyles.Float, CultureInfo.InvariantCulture, out float portionValue))
         {
             data.calculatePortion(portionValue);
+        }
+    }
+    public void SetActiveDot(int index)
+    {
+        int i = 0;
+        foreach (Transform dot in pagination){
+            Image img = dot.GetComponent<Image>();
+            img.color = (i == index) ? new Color32(0xFD, 0x7A, 0x12, 0xFF) : new Color32(0xAA, 0xAA, 0xAA, 0xFF);
+            i++;
         }
     }
 
