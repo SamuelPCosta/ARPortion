@@ -7,6 +7,7 @@ using TMPro;
 using System.IO;
 using Newtonsoft.Json.Linq;
 using System.Linq;
+using UnityEngine.Networking;
 
 [Serializable]
 public enum productUnity { ml, g, un} ;
@@ -21,6 +22,8 @@ public class Fact {
 [Serializable]
 public class NutritionFacts_Data : MonoBehaviour
 {
+    [SerializeField] private string DATA_URL = "https://arportion-3bffb-default-rtdb.firebaseio.com/.json";
+
     [Header("Objects")]
     [SerializeField] private Transform table;
     [SerializeField] private TextMeshProUGUI portionText;
@@ -41,65 +44,10 @@ public class NutritionFacts_Data : MonoBehaviour
     private JToken allergens;
     private float currentPortion = -1;
     private string itemName;
+    private JArray jsonArray;
 
-    public void LoadData(string product) {
-        TextAsset jsonText = Resources.Load<TextAsset>("data");
-        var jsonArray = JArray.Parse(jsonText.text);
-
-        if (product.Equals("Null"))
-            item = jsonArray.Children<JObject>().FirstOrDefault(x => (string)x["product"] == "Error");
-        else
-            item = jsonArray.Children<JObject>().FirstOrDefault(x => (string)x["product"] == product);
-
-
-        itemName = product;
-        productName.text = itemName;
-        Enum.TryParse<productUnity>(item["unity"]?.ToString(), true, out unity);
-
-        total = item["total"]?.ToObject<int>() ?? 0;
-        servingSize = item["servingSize"]?.ToObject<int>() ?? 0;
-        currentPortion = servingSize;
-        servingsPerContainer = total / servingSize;
-
-
-        FullScreenController fullScreen = GameObject.FindObjectOfType<FullScreenController>();
-        //painel 1 & 3
-        ingredients = fullScreen.ingredients.text = FormatBulletList(item["ingredients"]);
-        allergens = item["allergens"];
-        setAllergnsItems(item["allergens"]);
-
-
-
-        //painel 2
-        foreach (Transform child in table.transform)
-            Destroy(child.gameObject);
-
-        foreach (Transform child in fullScreen.table.transform)
-            Destroy(child.gameObject);
-
-        fullScreen.portionText.text = portionText.text = "" + currentPortion + unity.ToString();
-
-        fullScreen.inputField.text = "" + currentPortion;
-
-        foreach (var factJson in item["facts"].Children()){
-            Fact fact = new Fact{
-                name = factJson["name"].ToString(),
-                value = factJson["value"].ToObject<float>(),
-                dailyValue = factJson["dv"].ToObject<float>()
-            };
-
-            GameObject line = Instantiate(linePrefab, table.transform);
-            line.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = fact.name;
-            line.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = ""+fact.value;
-            line.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = ""+fact.dailyValue;
-            data.Add(line);
-
-            GameObject lineFullScreen = Instantiate(line, fullScreen.table.transform);
-        }
-
-        setName();
-
-        fullScreen.unityText.text = ""+unity.ToString();
+    public void SetData(string product) {
+        StartCoroutine(LoadData(product));
     }
 
     private string FormatBulletList(JToken token)
@@ -204,4 +152,69 @@ public class NutritionFacts_Data : MonoBehaviour
     {
         return unity.ToString();
     }
+
+    #region loadData
+    public IEnumerator LoadData(string product)
+    {
+        UnityWebRequest request = UnityWebRequest.Get(DATA_URL);
+        yield return request.SendWebRequest();
+
+        if (request.result == UnityWebRequest.Result.Success)
+            jsonArray = JArray.Parse(request.downloadHandler.text);
+        else
+        {
+            TextAsset jsonText = Resources.Load<TextAsset>("data");
+            jsonArray = JArray.Parse(jsonText.text);
+        }
+
+        if (product.Equals("Null"))
+            item = jsonArray.Children<JObject>().FirstOrDefault(x => (string)x["product"] == "Error");
+        else
+            item = jsonArray.Children<JObject>().FirstOrDefault(x => (string)x["product"] == product);
+
+        itemName = product;
+        productName.text = itemName;
+        Enum.TryParse<productUnity>(item["unity"]?.ToString(), true, out unity);
+
+        total = item["total"]?.ToObject<int>() ?? 0;
+        servingSize = item["servingSize"]?.ToObject<int>() ?? 0;
+        currentPortion = servingSize;
+        servingsPerContainer = total / servingSize;
+
+        FullScreenController fullScreen = GameObject.FindObjectOfType<FullScreenController>();
+        ingredients = fullScreen.ingredients.text = FormatBulletList(item["ingredients"]);
+        allergens = item["allergens"];
+        setAllergnsItems(item["allergens"]);
+
+        foreach (Transform child in table.transform)
+            Destroy(child.gameObject);
+
+        foreach (Transform child in fullScreen.table.transform)
+            Destroy(child.gameObject);
+
+        fullScreen.portionText.text = portionText.text = "" + currentPortion + unity.ToString();
+        fullScreen.inputField.text = "" + currentPortion;
+
+        foreach (var factJson in item["facts"].Children())
+        {
+            Fact fact = new Fact
+            {
+                name = factJson["name"].ToString(),
+                value = factJson["value"].ToObject<float>(),
+                dailyValue = factJson["dv"].ToObject<float>()
+            };
+
+            GameObject line = Instantiate(linePrefab, table.transform);
+            line.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = fact.name;
+            line.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "" + fact.value;
+            line.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = "" + fact.dailyValue;
+            data.Add(line);
+
+            GameObject lineFullScreen = Instantiate(line, fullScreen.table.transform);
+        }
+
+        setName();
+        fullScreen.unityText.text = "" + unity.ToString();
+    }
+    #endregion
 }

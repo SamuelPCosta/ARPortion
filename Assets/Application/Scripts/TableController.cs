@@ -4,16 +4,12 @@ using UnityEngine;
 
 public class TableController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    int TABLE_CHILD = 2;
 
     public void ActivateCanvasOverlay(){
         var canvas = GameObject.Find("CanvasOverlay");
         if (canvas != null) { 
-            canvas.transform.GetChild(1).gameObject.SetActive(true);
+            canvas.transform.GetChild(TABLE_CHILD).gameObject.SetActive(true);
             canvas.GetComponent<FullScreenController>().setTutorial();
         }
         else
